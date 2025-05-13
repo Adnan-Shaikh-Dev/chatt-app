@@ -4,10 +4,10 @@ import { AuthContext } from '../context/AuthContext';
 
 const Register = () => {
 
-  const {registerInfo, updateRegisterInfo} = useContext(AuthContext);
+  const {registerInfo, updateRegisterInfo,registerUser, registerError,isRegisterLoading} = useContext(AuthContext);
   return (
     <>
-    <Form>
+    <Form onSubmit={registerUser}>
         <Row style={{
           height:"100vh",
           justifyContent:"center",
@@ -19,8 +19,11 @@ const Register = () => {
                 <Form.Control type='text' placeholder='Name' onChange={(e)=> updateRegisterInfo({...registerInfo,name:e.target.value})}></Form.Control>
                 <Form.Control type='email' placeholder='Email' onChange={(e)=> updateRegisterInfo({...registerInfo,email:e.target.value})}></Form.Control>
                 <Form.Control type='password' placeholder='Password' onChange={(e)=> updateRegisterInfo({...registerInfo,password:e.target.value})}></Form.Control>
-                <Button variant='primary' type='submit'>Register</Button>
-                <Alert variant='danger'><p>An error has occured</p></Alert>
+                <Button variant='primary' type='submit'>{isRegisterLoading? "Creating your account": "Register"}</Button>
+                {
+                  registerError?.error && 
+                <Alert variant='danger'><p>{registerError?.message}</p></Alert>
+                }
             </Stack>
             </Col>
         </Row>
